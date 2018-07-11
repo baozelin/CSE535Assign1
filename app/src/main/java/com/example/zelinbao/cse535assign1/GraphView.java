@@ -15,6 +15,9 @@ public class GraphView extends View {
 
     public static boolean BAR = false;
     public static boolean LINE = true;
+    // public static boolean blGraphNeedsToRun=true;
+
+
 
     private Paint paint;
     private float[] values;
