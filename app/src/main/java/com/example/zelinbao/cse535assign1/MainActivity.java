@@ -6,13 +6,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import java.util.Random;
+
+import com.example.zelinbao.cse535assign1.GraphView;
 
 
 public class MainActivity extends AppCompatActivity {
-
+        //"100","90","80","70"
     GraphView graph;
-    String[] verlabels = new String[]{"100","90","80","70", "60", "50", "40", "30", "20","10","0"};
+    String[] verlabels = new String[]{ "90","80","70","60", "50", "40", "30", "20","10","0"};
     String[] horlabels = new String[]{"0", "1", "2", "3", "4", "5", "6","7","8","9"};
     float[] values = new float[20];
     boolean run = false;
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         //graph
         graph = new GraphView(this, values, "Running data", horlabels, verlabels, GraphView.LINE);
         //graph linear
@@ -39,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         graphlinear.addView(graph);
 
         Button startButton = (Button) findViewById(R.id.start);
+
+        boolean male = ((RadioButton) findViewById(R.id.male)).isChecked();
 
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                     graphlinear.addView(graph);
                                 }
                             });
+
                             try{
                                 Thread.sleep(400);
                             }catch (InterruptedException e){
@@ -77,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 thread.start();
+                Toast.makeText(MainActivity.this,  "run", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -89,7 +100,20 @@ public class MainActivity extends AppCompatActivity {
                 graphlinear.removeView(graph);
                 graph.setValues(values);
                 graphlinear.addView(graph);
-                System.out.println("stop");
+
+                Toast.makeText(MainActivity.this,  "stop", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        RadioGroup sexRadio = (RadioGroup) findViewById(R.id.sexRadioGroup);
+        sexRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                int id = radioGroup.getCheckedRadioButtonId();
+                RadioButton choise = (RadioButton) findViewById(id);
+                String output = choise.getText().toString();
+                Toast.makeText(MainActivity.this, "" + output, Toast.LENGTH_SHORT).show();
             }
         });
 
