@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button startButton = (Button) findViewById(R.id.start);
 
-        boolean male = ((RadioButton) findViewById(R.id.male)).isChecked();
+        //boolean male = ((RadioButton) findViewById(R.id.male)).isChecked();
 
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "" + output, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        String name = ((EditText) findViewById(R.id.name)).getText().toString();
+        String age = ((EditText) findViewById(R.id.age)).getText().toString();
+        String id = ((EditText) findViewById(R.id.id)).getText().toString();
 
     }
 
