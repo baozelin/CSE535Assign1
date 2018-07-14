@@ -18,7 +18,6 @@ import com.example.zelinbao.cse535assign1.GraphView;
 
 
 public class MainActivity extends AppCompatActivity {
-        //"100","90","80","70"
     GraphView graph;
     String[] verlabels = new String[]{ "90","80","70","60", "50", "40", "30", "20","10","0"};
     String[] horlabels = new String[]{"0", "1", "2", "3", "4", "5", "6","7","8","9"};
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                             try{
-                                Thread.sleep(400);
+                                Thread.sleep(800);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
