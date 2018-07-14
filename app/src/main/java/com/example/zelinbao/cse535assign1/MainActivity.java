@@ -19,10 +19,10 @@ import com.example.zelinbao.cse535assign1.GraphView;
 
 public class MainActivity extends AppCompatActivity {
     GraphView graph;
-    String[] verlabels = new String[]{ "90","80","70","60", "50", "40", "30", "20","10","0"};
-    String[] horlabels = new String[]{"0", "1", "2", "3", "4", "5", "6","7","8","9"};
+    String[] ylabels = new String[]{ "90","80","70","60", "50", "40", "30", "20","10","0"};
+    String[] xlabels = new String[]{"0", "1", "2", "3", "4", "5", "6","7","8","9"};
     float[] values = new float[20];
-    boolean run = false;
+    boolean ifRun = false;
 
     float[] points = new float[20];
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //graph
-        graph = new GraphView(this, values, "Running data", horlabels, verlabels, GraphView.LINE);
+        graph = new GraphView(this, values, "Running data", xlabels, ylabels, GraphView.LINE);
         //graph linear
         graphlinear = (LinearLayout) findViewById(R.id.linearGraph);
         graphlinear.addView(graph);
@@ -55,17 +55,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 random = new Random();
-                run = true;
-
-                for (int i = 0; i < points.length; i++) {
-                    points[i] = random.nextInt(50);
-                }
-
+                ifRun = true;
 
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        while (run) {
+                        while (ifRun) {
                             for (int i = 0; i < points.length; i++) {
                                 points[i] = random.nextInt(100);
                             }
@@ -97,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                run = false;
+                ifRun = false;
                 graphlinear.removeView(graph);
                 graph.setValues(values);
                 graphlinear.addView(graph);
