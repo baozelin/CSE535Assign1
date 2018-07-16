@@ -5,33 +5,31 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+
 import android.widget.Toast;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Random;
 
-import com.example.zelinbao.cse535assign1.GraphView;
 
 
 public class MainActivity extends AppCompatActivity {
-    GraphView graph;
-    String[] ylabels = new String[]{ "90","80","70","60", "50", "40", "30", "20","10","0"};
-    String[] xlabels = new String[]{"0", "1", "2", "3", "4", "5", "6","7","8","9"};
+    private double x = 0;
+    private double y =0;
     float[] values = new float[20];
     boolean ifRun = false;
-
-    float[] points = new float[20];
-
-    //FrameLayout graphFrame;
-    LinearLayout graphlinear;
     Random random;
     Thread thread;
 
-
+    private LineGraphSeries<DataPoint> series;
+    GraphView graph;
 
     @ Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,50 +38,57 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //graph
-        graph = new GraphView(this, values, "Running data", xlabels, ylabels, GraphView.LINE);
-        //graph linear
-        graphlinear = (LinearLayout) findViewById(R.id.linearGraph);
-        graphlinear.addView(graph);
+        graph = (GraphView) findViewById(R.id.graph);
+        series = new  LineGraphSeries<DataPoint>();
 
+        Viewport viewport = graph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        viewport.setMaxY(2500);
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(50);
+        viewport.setScrollable(true);
         Button startButton = (Button) findViewById(R.id.start);
-
-        //boolean male = ((RadioButton) findViewById(R.id.male)).isChecked();
 
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                random = new Random();
-                ifRun = true;
 
-                thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (ifRun) {
-                            for (int i = 0; i < points.length; i++) {
-                                points[i] = random.nextInt(100);
-                            }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    graph.setValues(points);
-                                    graphlinear.removeView(graph);
-                                    graphlinear.addView(graph);
+                if (ifRun == false) {
+
+                    random = new Random();
+                    ifRun = true;
+                    graph.addSeries(series);
+
+                    thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (ifRun) {
+
+                                runOnUiThread(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+
+                                        series.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
+                                    }
+                                });
+
+                                try {
+                                    Thread.sleep(400);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-
-                            try{
-                                Thread.sleep(800);
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
                             }
+
                         }
 
-                    }
-                });
-                thread.start();
-                Toast.makeText(MainActivity.this,  "run", Toast.LENGTH_SHORT).show();
+                    });
+                    thread.start();
+                    Toast.makeText(MainActivity.this, "run", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -92,11 +97,9 @@ public class MainActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ifRun = false;
-                graphlinear.removeView(graph);
-                graph.setValues(values);
-                graphlinear.addView(graph);
 
+                ifRun = false;
+                graph.removeSeries(series);
                 Toast.makeText(MainActivity.this,  "stop", Toast.LENGTH_SHORT).show();
             }
         });
@@ -107,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 int id = radioGroup.getCheckedRadioButtonId();
-                RadioButton choise = (RadioButton) findViewById(id);
-                String output = choise.getText().toString();
+                RadioButton choice = (RadioButton) findViewById(id);
+                String output = choice.getText().toString();
                 Toast.makeText(MainActivity.this, "" + output, Toast.LENGTH_SHORT).show();
             }
         });
