@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -18,7 +17,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Random;
 
-
+/**
+ * group 8
+ */
 
 public class MainActivity extends AppCompatActivity {
     private double x = 0;
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+        /**
+         * build a graph
+         */
         graph = (GraphView) findViewById(R.id.graph);
         series = new  LineGraphSeries<DataPoint>();
 
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         viewport.setScrollable(true);
         Button startButton = (Button) findViewById(R.id.start);
 
-
+        /**
+         * create a start button
+         */
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /**
+         * create a stop button
+         */
         Button stopButton = (Button) findViewById(R.id.stop);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /**
+         * build a sex radioGroup
+         */
         RadioGroup sexRadio = (RadioGroup) findViewById(R.id.sexRadioGroup);
         sexRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
